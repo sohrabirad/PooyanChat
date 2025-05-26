@@ -208,13 +208,8 @@ export function Header() {
     darkMode,
     setDarkMode,
     clearChat,
-    alignmentMode,
-    setAlignmentMode,
   } = useChat();
 
-  const handleToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAlignmentMode(event.target.checked ? "center" : "side");
-  };
 
   return (
     <AppBar position="sticky" color="primary" enableColorOnDark>
@@ -271,28 +266,6 @@ export function Header() {
   }}
 />
 
-<FormControlLabel
-  control={
-    <Switch
-      checked={alignmentMode === "center"}
-      onChange={handleToggle}
-      sx={{
-        // برگشت به رنگ‌های پیش‌فرض Material-UI برای سوئیچ‌ها
-        "& .MuiSwitch-thumb": {
-          backgroundColor: alignmentMode === "center" ? undefined : undefined, // پیش‌فرض رنگ دکمه
-        },
-        "& .MuiSwitch-track": {
-          backgroundColor: alignmentMode === "center" ? undefined : undefined, // پیش‌فرض رنگ پس‌زمینه
-        },
-      }}
-    />
-  }
-  label="وسط‌چین"
-  sx={{
-    color: "text.primary", // رنگ پیش‌فرض برای لیبل
-    userSelect: "none",
-  }}
-/>
 
 
           <IconButton color="inherit" onClick={clearChat} aria-label="پاک کردن چت">
