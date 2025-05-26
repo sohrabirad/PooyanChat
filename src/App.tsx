@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, createContext, useContext, ReactNode } from "react";
+import React, { useState, useEffect, useRef, createContext, useContext } from "react";
+import type { ReactNode } from "react";  // اضافه کردن type-only import برای ReactNode
 import {
   CssBaseline,
   Box,
@@ -306,7 +307,8 @@ export function Header() {
 export function Messages() {
   const { messages, darkMode, displayedAnswer, typing, alignmentMode } = useChat();
 
-  const messageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const messageRefs = useRef<HTMLDivElement[]>([]);  // تایپ ref به HTMLDivElement
+
 
   useEffect(() => {
     const lastAssistantIndex = [...messages]
@@ -345,34 +347,29 @@ export function Messages() {
       role="log"
     >
       {messages.map(({ id, role, content }, index) => {
-        let alignSelf = "center";
-        if (alignmentMode === "side") {
-          alignSelf = role === "user" ? "flex-end" : "flex-start";
-        }
 
         return (
 
 <Paper
+  component="div"
   key={id}
-  elevation={0} // حذف حاشیه
-  ref={(el) => (messageRefs.current[index] = el)}
+  elevation={0}
+  ref={(el: HTMLDivElement | null) => { 
+    if (el) messageRefs.current[index] = el; 
+  }}
   sx={{
-    p: "4px 16px", // کاهش فاصله از بالا و پایین
+    p: "8px 16px",
     mb: 1.5,
-    maxWidth: "800px", // محدود کردن حداکثر عرض به 800 پیکسل
-    width: "100%", // عرض کامل تا 800 پیکسل
-    alignSelf: "center", // مرکز کردن پیام‌ها در وسط صفحه
-    borderRadius: 3, // گرد کردن لبه‌ها
-    whiteSpace: "normal", // اطمینان از اینکه متن‌ها به صورت عمودی و ستونی نمایش داده می‌شوند
-    wordBreak: "break-word", // شکستن کلمات در صورت نیاز
-    bgcolor: "background.default", // هماهنگ با پس‌زمینه صفحه
-    color: darkMode ? "text.primary" : "grey.800", // رنگ متن روشن و تاریک
-    border: role === "user" ? `1px solid ${darkMode ? "#333" : "#ccc"}` : "none", // حاشیه دور سوالات کاربر
-    boxShadow: role === "user" ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none", // سایه برای حالت سه‌بعدی
-    display: "block", // استفاده از فلکس باکس برای راست‌چین کردن
-    flexDirection: "column", // نمایش پیام‌ها به صورت ستونی
-    textAlign: "right", // راست‌چین کردن متن
-    margin: "0 auto", // مرکز کردن پیام‌ها در صفحه
+    maxWidth: "800px",
+    width: "100%",
+    alignSelf: "center",
+    borderRadius: 3,
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+    bgcolor: "background.default",
+    color: darkMode ? "text.primary" : "grey.800",
+    border: role === "user" ? `1px solid ${darkMode ? "#333" : "#ccc"}` : "none",
+    boxShadow: role === "user" ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none",
   }}
   aria-label={role === "user" ? "پیام شما" : "پیام دستیار"}
 >
@@ -395,6 +392,8 @@ export function Messages() {
     <ReactMarkdown>{content}</ReactMarkdown>
   </Typography>
 </Paper>
+
+
 
 
 
